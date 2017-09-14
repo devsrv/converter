@@ -41143,24 +41143,195 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
-var Converter = function (_Component) {
-    _inherits(Converter, _Component);
+function castfield(type) {
+    var placeholder = '';
+    var shortform = '';
+    switch (type) {
+        case 'k':
+            placeholder = 'Kilogram';
+            shortform = 'K.G';
+            break;
+        case 'l':
+            placeholder = 'Pound';
+            shortform = 'LBS';
+            break;
+        default:
+            placeholder = shortform = 'Unit';
+    }
 
-    function Converter() {
+    return { placeholder: placeholder, shortform: shortform };
+}
+
+var Convfield = function (_Component) {
+    _inherits(Convfield, _Component);
+
+    function Convfield(props) {
+        _classCallCheck(this, Convfield);
+
+        var _this = _possibleConstructorReturn(this, (Convfield.__proto__ || Object.getPrototypeOf(Convfield)).call(this, props));
+
+        _this.handleChange = _this.handleChange.bind(_this);
+        return _this;
+    }
+
+    _createClass(Convfield, [{
+        key: 'handleChange',
+        value: function handleChange(e) {
+            var fieldValue = e.target.value;
+            fieldValue = fieldValue.trim();
+
+            this.props.hitChange(fieldValue);
+        }
+    }, {
+        key: 'makefield',
+        value: function makefield() {
+            var fieldtype = castfield(this.props.oftype);
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'input-block' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'text', className: 'form-control', placeholder: fieldtype.placeholder, value: this.props.input, onChange: this.handleChange })
+            );
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'col-md-4 inline' },
+                this.makefield(),
+                this.props.children
+            );
+        }
+    }]);
+
+    return Convfield;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+var ErrorMsg = function (_Component2) {
+    _inherits(ErrorMsg, _Component2);
+
+    function ErrorMsg(props) {
+        _classCallCheck(this, ErrorMsg);
+
+        return _possibleConstructorReturn(this, (ErrorMsg.__proto__ || Object.getPrototypeOf(ErrorMsg)).call(this, props));
+    }
+
+    _createClass(ErrorMsg, [{
+        key: 'render',
+        value: function render() {
+            if (!this.props.msg) {
+                return null;
+            }
+
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'errortip left' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'arrow' }),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'span',
+                    { className: 'text' },
+                    this.props.msg
+                )
+            );
+        }
+    }]);
+
+    return ErrorMsg;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+function validation(val) {
+    if (val == '') {
+        return { status: false, msg: '' };
+    } else if (isNaN(val)) {
+        return { status: false, msg: 'invalid weight input' };
+    } else if (val <= 0) {
+        return { status: false, msg: 'must be greater zero' };
+    }
+
+    return { status: true, msg: '' };
+}
+
+function weightCov(val) {
+    var type = val.oftype;
+    var data = val.input;
+
+    var output = '';
+    var valid = validation(data);
+
+    if (type == 'k') {
+        if (!valid.status) {
+            return { kg: data, lbs: '' };
+        }
+
+        output = { kg: data, lbs: data * 2.20462 };
+    } else if (type == 'l') {
+        if (!valid.status) {
+            return { kg: '', lbs: data };
+        }
+
+        output = { kg: data / 2.20462, lbs: data };
+    } else {
+        output = { kg: '', lbs: '' };
+    }
+
+    return output;
+}
+
+var Converter = function (_Component3) {
+    _inherits(Converter, _Component3);
+
+    function Converter(props) {
         _classCallCheck(this, Converter);
 
-        return _possibleConstructorReturn(this, (Converter.__proto__ || Object.getPrototypeOf(Converter)).apply(this, arguments));
+        var _this3 = _possibleConstructorReturn(this, (Converter.__proto__ || Object.getPrototypeOf(Converter)).call(this, props));
+
+        _this3.state = { input: '', shortform: '', errMsg: '', oftype: '' };
+        _this3.handleKgChange = _this3.handleKgChange.bind(_this3);
+        _this3.handlePoundChange = _this3.handlePoundChange.bind(_this3);
+        return _this3;
     }
 
     _createClass(Converter, [{
+        key: 'validateField',
+        value: function validateField(param) {
+            var valid = validation(param.val);
+            if (!valid.status) {
+                this.setState({ errMsg: valid.msg, oftype: param.oftype });
+                return false;
+            }
+
+            this.setState({ errMsg: '' });
+            return true;
+        }
+    }, {
+        key: 'handleKgChange',
+        value: function handleKgChange(val) {
+            this.setState({ oftype: 'k', input: val });
+            this.validateField({ val: val, oftype: 'k' });
+        }
+    }, {
+        key: 'handlePoundChange',
+        value: function handlePoundChange(val) {
+            this.setState({ oftype: 'l', input: val });
+            this.validateField({ val: val, oftype: 'l' });
+        }
+    }, {
         key: 'render',
         value: function render() {
+
+            var kilogram = '';
+            var pound = '';
+
+            var converted = weightCov({ oftype: this.state.oftype, input: this.state.input });
+            kilogram = converted.kg;
+            pound = converted.lbs;
+
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'section',
                 { className: 'converter' },
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
-                    { 'class': 'container' },
+                    { className: 'container' },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'h3',
                         null,
@@ -41171,9 +41342,14 @@ var Converter = function (_Component) {
                         'div',
                         { className: 'row' },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'col-md-4' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'text', className: 'form-control', placeholder: 'Kilogram' })
+                            Convfield,
+                            { oftype: 'k', hitChange: this.handleKgChange, input: kilogram },
+                            this.state.oftype == 'k' ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(ErrorMsg, { msg: this.state.errMsg }) : '',
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'span',
+                                null,
+                                'K.G'
+                            )
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'div',
@@ -41181,11 +41357,15 @@ var Converter = function (_Component) {
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fa fa-exchange', 'aria-hidden': 'true' })
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'col-md-4' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'text', className: 'form-control', placeholder: 'Pound' })
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'clearfix' })
+                            Convfield,
+                            { oftype: 'l', hitChange: this.handlePoundChange, input: pound },
+                            this.state.oftype == 'l' ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(ErrorMsg, { msg: this.state.errMsg }) : '',
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'span',
+                                null,
+                                'LBS'
+                            )
+                        )
                     )
                 )
             );
