@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>React App</title>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/bootstrap-4/css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap-4/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
     <style type="text/css">
         .converter{
@@ -59,14 +58,14 @@
 
     <div class="container-fluid">
         <div class="container">
-            <img src="{{ asset('assets/images/react.svg') }} " width="500" class="img-responsive" />     
+            <img src="assets/images/react.svg" width="500" class="img-responsive" />     
         </div>
 
         <div id="app"></div>
 
     </div>
 
-    <script type="text/javascript" src="{{ asset('assets/js/app.js') }}"></script>
+    <script type="text/javascript" src="assets/js/converter.js"></script>
 
 </body>
 </html>
