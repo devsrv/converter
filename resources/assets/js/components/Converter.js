@@ -22,6 +22,10 @@ function castfield(type)
     return {placeholder, shortform};
 }
 
+/**
+*generating the input field component
+*
+*/
 class Convfield extends Component
 {
     constructor(props)
@@ -60,6 +64,9 @@ class Convfield extends Component
     }
 }
 
+/**
+*error message tooltip component
+*/
 class ErrorMsg extends Component
 {
     constructor(props)
@@ -83,6 +90,9 @@ class ErrorMsg extends Component
     }
 }
 
+/**
+*field validation
+*/
 function validation(val)
 {
     if(val == '')
@@ -101,6 +111,9 @@ function validation(val)
     return {status:true, msg:''};
 }
 
+/**
+*kg & pound conversion logic
+*/
 function weightCov(val)
 {
     let type = val.oftype;

@@ -41162,6 +41162,11 @@ function castfield(type) {
     return { placeholder: placeholder, shortform: shortform };
 }
 
+/**
+*generating the input field component
+*
+*/
+
 var Convfield = function (_Component) {
     _inherits(Convfield, _Component);
 
@@ -41207,6 +41212,11 @@ var Convfield = function (_Component) {
     return Convfield;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
 
+/**
+*error message tooltip component
+*/
+
+
 var ErrorMsg = function (_Component2) {
     _inherits(ErrorMsg, _Component2);
 
@@ -41239,6 +41249,11 @@ var ErrorMsg = function (_Component2) {
     return ErrorMsg;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
 
+/**
+*field validation
+*/
+
+
 function validation(val) {
     if (val == '') {
         return { status: false, msg: '' };
@@ -41251,6 +41266,9 @@ function validation(val) {
     return { status: true, msg: '' };
 }
 
+/**
+*kg & pound conversion logic
+*/
 function weightCov(val) {
     var type = val.oftype;
     var data = val.input;
